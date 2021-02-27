@@ -1,7 +1,11 @@
+import requests
+
+
 class DownloadData:
     def __init__(self, cars, image_path_to_save):
         self.cars = cars
         self.image_path_to_save = image_path_to_save
+
 
     def download_image(self, image_path):
         print("Downloading: " + str(image_path))
@@ -43,8 +47,7 @@ class DownloadData:
                 current_count = (i + 1) * j
                 try:
                     image_name = str(current_count) + ".jpg"
-                    self.download_image(self.transform_image_size_before_download(car["img_url"]),
-                                   base_img_url + "/" + image_name)
+                    self.download_image(self.transform_image_size_before_download(car["img_url"]))
                     mapping_image_to_class[image_name] = car["classification"]
                 except:
                     pass

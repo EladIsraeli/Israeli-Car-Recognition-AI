@@ -10,7 +10,7 @@ class Not200StatusCode(Exception):
     pass
 
 
-class Parser:
+class YAD2Parser:
     """
     Basic yad2.co.il parser, data parsing (apartment rentals) for the specified parameters
     Makes request to the site, parses the data, saves data to a list
