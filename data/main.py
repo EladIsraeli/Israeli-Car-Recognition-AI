@@ -1,15 +1,19 @@
+import pickle
+
 from data.generate_data import define_critirions_to_generate_cars
 from data.downloading_data import DownloadData
 from config.applicationconfig import config
 from data.split_data import split_data
 
 def main():
-    cars_meta_data = define_critirions_to_generate_cars()
+    cars_meta_data = load_cars_meta_data()
+    print(cars_meta_data)
+    #cars_meta_data = define_critirions_to_generate_cars()
     save_cars_meta_data(cars_meta_data)
     test_list, train_list = split_data(cars_meta_data)
 
-    downloader_train = DownloadData(train_list, config["save_data_address"])
-    downloader_test = DownloadData(test_list, config["save_data_address"])
+    downloader_train = DownloadData(train_list, config["save_data_address_train"])
+    downloader_test = DownloadData(test_list, config["save_data_address_test"])
 
     mapping_image_to_class_train = downloader_train.start_downloading_images()
     save_mapping_image_to_class_train_list(mapping_image_to_class_train)

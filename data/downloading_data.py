@@ -7,7 +7,7 @@ class DownloadData:
         self.image_path_to_save = image_path_to_save
 
 
-    def download_image(self, image_path):
+    def download_image(self, image_path, image_name):
         print("Downloading: " + str(image_path))
         header = {
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -24,10 +24,11 @@ class DownloadData:
             'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
         }
         r = requests.get(image_path,  stream=True, allow_redirects=True)
-        print(r.status_code)
+        # print(r.status_code)
         if r.status_code == 200:
-            print(r.raw)
-            with open(self.image_path_to_save, 'wb') as f:
+            # print(r.raw)
+            full_path_to_download = self.image_path_to_save + "/" + image_name
+            with open(full_path_to_download, 'wb') as f:
                 f.write(r.content)
 
 
@@ -41,15 +42,16 @@ class DownloadData:
     def start_downloading_images(self):
         mapping_image_to_class = {}
 
+        counter = 0
         for i, car_type in enumerate(self.cars):
             for j, car in enumerate(car_type):
                 print(car)
-                current_count = (i + 1) * j
                 try:
-                    image_name = str(current_count) + ".jpg"
-                    self.download_image(self.transform_image_size_before_download(car["img_url"]))
+                    image_name = str(counter) + ".jpg"
+                    counter = counter + 1
+                    self.download_image(self.transform_image_size_before_download(car["img_url"]), image_name)
                     mapping_image_to_class[image_name] = car["classification"]
-                except:
+                except Exception as e:
                     pass
 
         return mapping_image_to_class
